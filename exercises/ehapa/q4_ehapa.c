@@ -1,42 +1,43 @@
 #include <stdio.h>
-#include <string.h>
 
-struct Participante {
-    char idioma[20];
-}typedef Participante;
+typedef struct {
+    int comprimento;
+} Lado;
+
+int formaTriangulo(Lado *a, Lado *b, Lado *c) {
+    if ((a->comprimento + b->comprimento > c->comprimento) &&
+        (a->comprimento + c->comprimento > b->comprimento) &&
+        (b->comprimento + c->comprimento > a->comprimento)) {
+        return 1;
+    }
+    return 0;
+}
 
 int main() {
-    int N, K, i, j;
+    Lado lados[4];
     
-    scanf("%d", &N);
-    
-    for (i = 0; i < N; i++) {
-        scanf("%d", &K);
-        
-        Participante p[K];
-        
-        for (j = 0; j < K; j++) {
-            scanf("%s", p[j].idioma);
-        }
-        
-        char idioma_base[20];
-        strcpy(idioma_base, p[0].idioma);
-        
-        int todos_iguais = 1;
-        
-        for (j = 1; j < K; j++) {
-            if (strcmp(p[j].idioma, idioma_base) != 0) {
-                todos_iguais = 0;
-                break;
-            }
-        }
-        
-        if (todos_iguais) {
-            printf("%s\n", idioma_base);
-        } else {
-            printf("ingles\n");
-        }
+    for (int i = 0; i < 4; i++) {
+        scanf("%d", &lados[i].comprimento);
     }
+    
+    int possivel = 0;
+    for (int i = 0; i < 2; i++) {
+        for (int j = i + 1; j < 3; j++) {
+            for (int k = j + 1; k < 4; k++) {
+                if (formaTriangulo(&lados[i], &lados[j], &lados[k])) {
+                    possivel = 1;
+                    break;
+                }
+            }
+            if (possivel) break;
+        }
+        if (possivel) break;
+    }
+    
+    if (possivel)
+        printf("S\n");
+    else
+        printf("N\n");
     
     return 0;
 }

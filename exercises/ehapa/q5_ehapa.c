@@ -1,34 +1,43 @@
 #include <stdio.h>
 
+#define MAX 500
+
 typedef struct {
-    int Ax, Ay;
-    int Bx, By;
-    int Cx, Cy;
-    int Dx, Dy;
-    int Rx, Ry;
-} Area;
+    int velocidade;
+} Lesma;
+
+int velocidadeMaxima(Lesma *lesmas, int qtd) {
+    int max = lesmas[0].velocidade;
+    for (int i = 1; i < qtd; i++) {
+        if ((lesmas + i)->velocidade > max) {
+            max = (lesmas + i)->velocidade;
+        }
+    }
+    return max;
+}
+
+int classificarCorrida(int velMax) {
+    if (velMax < 10)
+        return 1;
+    else if (velMax < 20)
+        return 2;
+    else
+        return 3;
+}
 
 int main() {
-    int N;
-    Area a;
+    int L;
+    Lesma lesmas[MAX];
 
-    scanf("%d", &N);
-
-    for (int i = 0; i < N; i++) {
-        scanf("%d %d", &a.Ax, &a.Ay);
-        scanf("%d %d", &a.Bx, &a.By);
-        scanf("%d %d", &a.Cx, &a.Cy);
-        scanf("%d %d", &a.Dx, &a.Dy);
-        scanf("%d %d", &a.Rx, &a.Ry);
-
-        if (a.Ax <= a.Rx && a.Dx <= a.Rx &&
-            a.Rx <= a.Bx && a.Rx <= a.Cx &&
-            a.Ay <= a.Ry && a.By <= a.Ry &&
-            a.Ry <= a.Cy && a.Ry <= a.Dy) {
-            printf("1\n");
-        } else {
-            printf("0\n");
+    while (scanf("%d", &L) != EOF) {
+        for (int i = 0; i < L; i++) {
+            scanf("%d", &(lesmas[i].velocidade));
         }
+
+        int max = velocidadeMaxima(lesmas, L);
+        int nivel = classificarCorrida(max);
+
+        printf("%d\n", nivel);
     }
 
     return 0;
